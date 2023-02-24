@@ -12,6 +12,7 @@ describe('NFT', () => {
   const SYMBOL = 'DP';
   const COST = etherToWei(10);
   const MAX_SUPPLY = 25;
+  const BASE_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
   let nftContract;
 
@@ -28,7 +29,9 @@ describe('NFT', () => {
           _symbol: SYMBOL,
           _cost: COST,
           _maxSupply: MAX_SUPPLY,
-          _publicMintOpenOn: PUBLIC_MINT_OPENS
+          _publicMintOpenOn: PUBLIC_MINT_OPENS,
+          _baseURI: BASE_URI
+
       });
     })
 
@@ -46,6 +49,9 @@ describe('NFT', () => {
     });
     it('returns the open to public minting time', async () => {
       expect(await nftContract.publicMintOpenOn()).to.equal(PUBLIC_MINT_OPENS);
+    });
+    it('returns the IPFS base URI', async () => {
+      expect(await nftContract.baseURI()).to.equal(BASE_URI);
     });
   })
 
