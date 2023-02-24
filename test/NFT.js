@@ -11,6 +11,7 @@ describe('NFT', () => {
   const NAME = 'Dapp Punks';
   const SYMBOL = 'DP';
   const COST = etherToWei(10);
+  const MAX_SUPPLY = 25;
 
   let nftContract;
 
@@ -21,7 +22,8 @@ describe('NFT', () => {
       nftContract = await NFT_factory.deploy({
           _name: NAME,
           _symbol: SYMBOL,
-          _cost: COST
+          _cost: COST,
+          _maxSupply: MAX_SUPPLY,
       });
     })
 
@@ -33,6 +35,9 @@ describe('NFT', () => {
     });
     it('returns the cost to mint', async () => {
       expect(await nftContract.cost()).to.equal(COST);
+    });
+    it('returns the maximum total supply', async () => {
+      expect(await nftContract.maxSupply()).to.equal(MAX_SUPPLY);
     });
   })
 
