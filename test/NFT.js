@@ -17,7 +17,9 @@ describe('NFT', () => {
 
   
   describe('Deployment', () => {
-    const PUBLIC_MINT_OPENS = '1703466000' // Date and time (GMT): Monday, December 25, 2023 1:00:00 AM
+    // RESOURCE - https://www.epochconverter.com/
+    // const PUBLIC_MINT_OPENS = '1703466000' // Date and time (GMT): Monday, December 25, 2023 1:00:00 AM
+    const PUBLIC_MINT_OPENS = (Date.now() + 120000).toString().slice(0, 10) // 2 minutes from now
 
     beforeEach(async () => {
       const NFT_factory = await ethers.getContractFactory('NFT');
