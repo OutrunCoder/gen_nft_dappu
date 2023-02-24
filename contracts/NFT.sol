@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./ERC721Enumerable.sol";
+import "./Ownable.sol";
 
 struct NFTDeploymentArgs {
   string _name;
@@ -12,7 +13,7 @@ struct NFTDeploymentArgs {
   string _baseURI;
 }
 
-contract NFT is ERC721Enumerable {
+contract NFT is ERC721Enumerable, Ownable {
     uint256 public cost;
     uint256 public maxSupply;
     uint256 public publicMintOpenOn;
