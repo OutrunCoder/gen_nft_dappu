@@ -17,6 +17,8 @@ describe('NFT', () => {
 
   
   describe('Deployment', () => {
+    const PUBLIC_MINT_OPENS = '1703466000' // Date and time (GMT): Monday, December 25, 2023 1:00:00 AM
+
     beforeEach(async () => {
       const NFT_factory = await ethers.getContractFactory('NFT');
       nftContract = await NFT_factory.deploy({
@@ -24,6 +26,7 @@ describe('NFT', () => {
           _symbol: SYMBOL,
           _cost: COST,
           _maxSupply: MAX_SUPPLY,
+          _publicMintOpenOn: PUBLIC_MINT_OPENS
       });
     })
 
@@ -38,6 +41,9 @@ describe('NFT', () => {
     });
     it('returns the maximum total supply', async () => {
       expect(await nftContract.maxSupply()).to.equal(MAX_SUPPLY);
+    });
+    it('returns the open to public minting time', async () => {
+      expect(await nftContract.publicMintOpenOn()).to.equal(PUBLIC_MINT_OPENS);
     });
   })
 
