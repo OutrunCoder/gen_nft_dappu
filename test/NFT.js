@@ -14,9 +14,16 @@ describe('NFT', () => {
   const MAX_SUPPLY = 25;
   const BASE_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
-  let nftContract;
+  let nftContract, deployer, minter;
 
-  
+  beforeEach(async () => {
+    let accounts = await ethers.getSigners();
+    [
+      deployer,
+      minter
+    ] = accounts;
+  });
+
   describe('Deployment', () => {
     // RESOURCE - https://www.epochconverter.com/
     // const PUBLIC_MINT_OPENS = '1703466000' // Date and time (GMT): Monday, December 25, 2023 1:00:00 AM
@@ -52,6 +59,9 @@ describe('NFT', () => {
     });
     it('returns the IPFS base URI', async () => {
       expect(await nftContract.baseURI()).to.equal(BASE_URI);
+    });
+    it('returns the owner', async () => {
+      expect(await nftContract.owner()).to.equal(deployer.address);
     });
   })
 
