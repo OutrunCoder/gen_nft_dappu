@@ -101,6 +101,10 @@ describe('NFT', () => {
         expect(await nftContract.ownerOf(1)).to.equal(minter.address);
       })
 
+      it('returns total number of tokens the minter owns', async () => {
+        expect(await nftContract.balanceOf(minter.address)).to.equal(MINT_QTY)
+      })
+
       it('updates the total supply', async() => { 
         const totalSupplyMinted = await nftContract.totalSupply();
         console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
@@ -113,7 +117,7 @@ describe('NFT', () => {
 
       it('emits Mint event', async () => {
         await expect(trx).to.emit(nftContract, 'Mint')
-          .withArgs(20, minter.address);
+          .withArgs(MINT_QTY, minter.address);
       })
     });
 
