@@ -108,8 +108,14 @@ describe('NFT', () => {
       });
     });
 
-    // describe('Failure', () => {});
+    describe('Failure', () => {
 
+      it('rejects insufficient mint payment', async() => {
+        const underFundedMint = nftContract.connect(minter).mint(MINT_QTY, { value: etherToWei(5) }); // SHOULD BE 10 PER MINT
+        await expect(underFundedMint).to.be.reverted;
+      });
+    });
+    
     // it('', async() => {});
   });
 
