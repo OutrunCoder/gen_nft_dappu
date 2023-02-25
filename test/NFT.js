@@ -67,6 +67,7 @@ describe('NFT', () => {
 
   describe('Minting', () => {
     let trx, result;
+    const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
     const MINT_QTY = 45;
     const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
     const combinedMintCost = etherToWei(mintAmountInEth);
@@ -76,26 +77,24 @@ describe('NFT', () => {
     })
     console.log('>> COMBINED_MINT_COST:', combinedMintCost);
 
-    describe('Success', () => {
-      const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
-
-      beforeEach(async () => {
-        // DEPLOY
-        const NFT_factory = await ethers.getContractFactory('NFT');
-        nftContract = await NFT_factory.deploy({
-          _name: NAME,
-          _symbol: SYMBOL,
-          _cost: ONE_MINT_COST,
-          _maxSupply: MAX_SUPPLY,
-          _publicMintOpenOn: PUBLIC_MINT_OPENS,
-          _baseURI: BASE_URI
-        });
-
-        // MINT
-        trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
-        result = await trx.wait();
+    beforeEach(async () => {
+      // DEPLOY
+      const NFT_factory = await ethers.getContractFactory('NFT');
+      nftContract = await NFT_factory.deploy({
+        _name: NAME,
+        _symbol: SYMBOL,
+        _cost: ONE_MINT_COST,
+        _maxSupply: MAX_SUPPLY,
+        _publicMintOpenOn: PUBLIC_MINT_OPENS,
+        _baseURI: BASE_URI
       });
 
+      // MINT
+      trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
+      result = await trx.wait();
+    });
+
+    describe('Success', () => {
       it('updates the total supply', async() => {
         const totalSupplyMinted = await nftContract.totalSupply();
         console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
