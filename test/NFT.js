@@ -97,6 +97,10 @@ describe('NFT', () => {
         result = await trx.wait();
       });
 
+      it('returns the address of the minter', async () => {
+        expect(await nftContract.ownerOf(1)).to.equal(minter.address);
+      })
+
       it('updates the total supply', async() => { 
         const totalSupplyMinted = await nftContract.totalSupply();
         console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
