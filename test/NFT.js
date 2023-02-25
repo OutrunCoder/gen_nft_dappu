@@ -268,7 +268,7 @@ describe('NFT', () => {
       trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
       result = await trx.wait();
 
-      balanceBefore = ethers.provider.getBalance(deployer.address);
+      balanceBefore = await ethers.provider.getBalance(deployer.address);
 
       // ! WITHDRAW BALANCE
       trx = await nftContract.connect(deployer).withdraw();
@@ -279,6 +279,12 @@ describe('NFT', () => {
       it('deducts contract balance', async () => {
         expect(await ethers.provider.getBalance(nftContract.address)).to.equal(0);
       })
+
+      it('sends funds to the deployer/owner', async () => {
+        const updatedBalance = await ethers.provider.getBalance(deployer.address);
+        expect(updatedBalance).to.be.greaterThan(balanceBefore);
+      })
+
     });
   });
 
