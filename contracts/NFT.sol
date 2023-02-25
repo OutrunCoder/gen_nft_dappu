@@ -80,4 +80,17 @@ contract NFT is ERC721Enumerable, Ownable {
         // DOCS - resolved by: https://ethereum.stackexchange.com/questions/119294/typeerror-member-tostring-not-found-or-not-visible-after-argument-dependent-l
         // return(string(abi.encodePacked(baseURI, '/', Strings.toString(_tokenId), '.json')));
     }
+
+    function walletOfOwner(address _owner) public view returns(uint256[] memory) {
+        // ? garbage collection ? with memory modifier
+        // ? life cycle / state management / scope
+        uint256 ownerTokenCount = balanceOf(_owner);
+        uint256[] memory tokenIds = new uint256[](ownerTokenCount);
+
+        for(uint256 i; i < ownerTokenCount; i++) {
+            tokenIds[i] = tokenOfOwnerByIndex(_owner, i); // << from libs
+        }
+
+        return tokenIds;
+    }
 }

@@ -194,6 +194,47 @@ describe('NFT', () => {
     });
   });
 
+  describe('Displaying NFTs', ()=> {
+    // TODO - CONSOLIDATE AND ABSTRACT DEPLOYMENT
+    let trx, result;
+    const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
+    const MINT_QTY = 5;
+    const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
+    const combinedMintCost = etherToWei(mintAmountInEth);
+
+    console.table({
+      mintAmountInEth
+    })
+    console.log('>> COMBINED_MINT_COST:', combinedMintCost);
+
+    beforeEach(async () => {
+      // ! DEPLOY FOR ALL MINTING !
+      const NFT_factory = await ethers.getContractFactory('NFT');
+      nftContract = await NFT_factory.deploy({
+        _name: NAME,
+        _symbol: SYMBOL,
+        _cost: ONE_MINT_COST,
+        _maxSupply: MAX_SUPPLY,
+        _publicMintOpenOn: PUBLIC_MINT_OPENS,
+        _baseURI: BASE_URI
+      });
+
+      const trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
+      await trx.wait();
+    });
+
+    it('returns all the NFTs for a given owner', async() => {
+      const walletCheck = await nftContract.walletOfOwner(minter.address);
+      // console.log('>> WALLET_CHECK:', walletCheck);
+      expect(walletCheck.length).to.equal(MINT_QTY);
+      expect(walletCheck[0].toString()).of.equal('1');
+      expect(walletCheck[1].toString()).of.equal('2');
+      expect(walletCheck[2].toString()).of.equal('3');
+      expect(walletCheck[3].toString()).of.equal('4');
+      expect(walletCheck[4].toString()).of.equal('5');
+    });
+  });
+
   // X - TEMPLATE
   // describe('TEMP', () => {
   //   let trx, result;
