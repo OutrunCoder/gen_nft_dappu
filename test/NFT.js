@@ -13,7 +13,7 @@ describe('NFT', () => {
   const ETH_PER_MINT = 10;
   const ONE_MINT_COST = etherToWei(ETH_PER_MINT);
   const MAX_SUPPLY = 25;
-  const BASE_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
+  const BASE_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg'
 
   let nftContract, deployer, minter;
 
@@ -104,6 +104,11 @@ describe('NFT', () => {
       it('returns total number of tokens the minter owns', async () => {
         expect(await nftContract.balanceOf(minter.address)).to.equal(MINT_QTY)
       })
+
+      it('returns IPFS URI', async() => {
+        const targetURI = `${BASE_URI}/1.json`;
+        expect(await nftContract.tokenURI(1)).to.equal(targetURI);
+      });
 
       it('updates the total supply', async() => { 
         const totalSupplyMinted = await nftContract.totalSupply();

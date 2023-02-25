@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./ERC721Enumerable.sol";
 import "./Ownable.sol";
+import "./Strings.sol";
 
 struct NFTDeploymentArgs {
   string _name;
@@ -14,6 +15,8 @@ struct NFTDeploymentArgs {
 }
 
 contract NFT is ERC721Enumerable, Ownable {
+    using Strings for uint256;
+
     uint256 public cost;
     uint256 public maxSupply;
     uint256 public publicMintOpenOn;
@@ -58,5 +61,21 @@ contract NFT is ERC721Enumerable, Ownable {
         }
 
         emit Mint(_mintQty, msg.sender);
+    }
+
+    // Return metadata IPFS url
+    // EG: 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/1.json'
+    function tokenURI(uint256 _tokenId)
+        public
+        view
+        virtual
+        override
+        returns(string memory)
+    {
+        // ! from poc
+        // requires 
+        return (string (abi.encodePacked(baseURI, '/', _tokenId.toString(), '.json')));
+        // DOCS - resolved by: https://ethereum.stackexchange.com/questions/119294/typeerror-member-tostring-not-found-or-not-visible-after-argument-dependent-l
+        // return(string(abi.encodePacked(baseURI, '/', Strings.toString(_tokenId), '.json')));
     }
 }
