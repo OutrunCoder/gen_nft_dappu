@@ -101,6 +101,10 @@ describe('NFT', () => {
         console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
         expect(totalSupplyMinted).to.equal(MINT_QTY);
       });
+
+      it('updates the contract ether balance', async() => {
+        expect(await ethers.provider.getBalance(nftContract.address)).to.equal(combinedMintCost);
+      });
     });
 
     // describe('Failure', () => {});
