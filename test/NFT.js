@@ -67,7 +67,14 @@ describe('NFT', () => {
 
   describe('Minting', () => {
     let trx, result;
-    const MINT_QTY = 1;
+    const MINT_QTY = 45;
+    const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
+    const combinedMintCost = etherToWei(mintAmountInEth);
+
+    console.table({
+      mintAmountInEth
+    })
+    console.log('>> COMBINED_MINT_COST:', combinedMintCost);
 
     describe('Success', () => {
       const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
@@ -85,14 +92,30 @@ describe('NFT', () => {
         });
 
         // MINT
-        trx = await nftContract.connect(minter).mint(MINT_QTY);
+        trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
         result = await trx.wait();
       });
 
       it('updates the total supply', async() => {
-        expect(await nftContract.totalSupply()).to.equal(MINT_QTY);
+        const totalSupplyMinted = await nftContract.totalSupply();
+        console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
+        expect(totalSupplyMinted).to.equal(MINT_QTY);
       });
     });
+
+    // describe('Failure', () => {});
+
+    // it('', async() => {});
   });
 
+  // X - TEMPLATE
+  // describe('TEMP', () => {
+  //   let trx, result;
+
+  //   describe('Success', () => {});
+
+    // describe('Failure', () => {});
+
+    // it('', async() => {});
+  // });
 })
