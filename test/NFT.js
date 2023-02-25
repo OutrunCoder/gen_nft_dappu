@@ -114,6 +114,11 @@ describe('NFT', () => {
         const underFundedMint = nftContract.connect(minter).mint(MINT_QTY, { value: etherToWei(5) }); // SHOULD BE 10 PER MINT
         await expect(underFundedMint).to.be.reverted;
       });
+      
+      it('rejects null mint quantity', async() => {
+        const nullMint = nftContract.connect(minter).mint(0, { value: combinedMintCost }); // SHOULD BE 10 PER MINT
+        await expect(nullMint).to.be.reverted;
+      });
     });
     
     // it('', async() => {});
