@@ -290,6 +290,12 @@ describe('NFT', () => {
           .withArgs(combinedMintCost, deployer.address);
       });
     });
+
+    describe('Failure', () => {
+      it('prevents non-owner from withdrawing', async() => {
+        const otherGuyWitdraws = nftContract.connect(minter).withdraw();
+        await expect(otherGuyWitdraws).to.be.reverted;
+      });
     });
   });
 
