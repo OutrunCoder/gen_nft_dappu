@@ -78,7 +78,7 @@ describe('NFT', () => {
     console.log('>> COMBINED_MINT_COST:', combinedMintCost);
 
     beforeEach(async () => {
-      // DEPLOY
+      // ! DEPLOY FOR ALL MINTING !
       const NFT_factory = await ethers.getContractFactory('NFT');
       nftContract = await NFT_factory.deploy({
         _name: NAME,
@@ -88,14 +88,16 @@ describe('NFT', () => {
         _publicMintOpenOn: PUBLIC_MINT_OPENS,
         _baseURI: BASE_URI
       });
-
-      // MINT
-      trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
-      result = await trx.wait();
     });
 
     describe('Success', () => {
-      it('updates the total supply', async() => {
+      beforeEach(async() => {
+        // ! MINT - SUCCESS
+        trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
+        result = await trx.wait();
+      });
+
+      it('updates the total supply', async() => { 
         const totalSupplyMinted = await nftContract.totalSupply();
         console.log('>> TOTAL SUPPLY MINTED:', totalSupplyMinted, MINT_QTY);
         expect(totalSupplyMinted).to.equal(MINT_QTY);
