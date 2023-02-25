@@ -94,10 +94,14 @@ contract NFT is ERC721Enumerable, Ownable {
         return tokenIds;
     }
 
+    event Withdraw(uint256 amount, address owner);
+
     function withdraw()public onlyOwner {
         uint256 balance = address(this).balance;
 
         (bool success, ) = payable(msg.sender).call{value: balance}("");
         require(success, 'Balance transer was stopped');
+
+        emit Withdraw(balance, msg.sender);
     }
 }

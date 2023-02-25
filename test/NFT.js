@@ -264,7 +264,7 @@ describe('NFT', () => {
       });
 
       // ! MINT - SUCCESS
-      console.log('>> MINTING:', MINT_QTY);
+      // console.log('>> MINTING:', MINT_QTY);
       trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
       result = await trx.wait();
 
@@ -285,6 +285,11 @@ describe('NFT', () => {
         expect(updatedBalance).to.be.greaterThan(balanceBefore);
       })
 
+      it('emits a withdaw event', async() => {
+        await expect(trx).to.emit(nftContract, 'Withdraw')
+          .withArgs(combinedMintCost, deployer.address);
+      });
+    });
     });
   });
 
