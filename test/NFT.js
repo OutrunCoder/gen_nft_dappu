@@ -148,6 +148,11 @@ describe('NFT', () => {
         const overMintReq = nftContract.connect(minter).mint(OVER_MINT, { value: etherToWei(1000) });
         await expect(overMintReq).to.be.reverted;
       })
+
+      it('does not return URIs for invalid token IDs', async() => {
+        const badURIRequest = nftContract.connect(minter).tokenURI(27); // 2 over 25 max
+        await expect(badURIRequest).to.be.reverted;
+      });
     });
     
     // it('', async() => {});

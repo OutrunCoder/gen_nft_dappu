@@ -72,8 +72,10 @@ contract NFT is ERC721Enumerable, Ownable {
         override
         returns(string memory)
     {
+        require(_exists(_tokenId), 'Token ID is not supported or minted.');
+
         // ! from poc
-        // requires 
+        // requires "using Strings for uint256;" at top of contract
         return (string (abi.encodePacked(baseURI, '/', _tokenId.toString(), '.json')));
         // DOCS - resolved by: https://ethereum.stackexchange.com/questions/119294/typeerror-member-tostring-not-found-or-not-visible-after-argument-dependent-l
         // return(string(abi.encodePacked(baseURI, '/', Strings.toString(_tokenId), '.json')));
