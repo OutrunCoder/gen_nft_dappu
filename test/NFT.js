@@ -38,9 +38,8 @@ describe('NFT', () => {
           _maxSupply: MAX_SUPPLY,
           _publicMintOpenOn: PUBLIC_MINT_OPENS,
           _baseURI: BASE_URI
-
       });
-    })
+    });
 
     it('has correct name', async () => {
       expect(await nftContract.name()).to.equal(NAME);
@@ -64,5 +63,34 @@ describe('NFT', () => {
       expect(await nftContract.owner()).to.equal(deployer.address);
     });
   })
+
+  describe('Minting', () => {
+    let trx, result;
+
+    describe('Success', () => {
+      const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
+
+      beforeEach(async () => {
+        // DEPLOY
+        const NFT_factory = await ethers.getContractFactory('NFT');
+        nftContract = await NFT_factory.deploy({
+          _name: NAME,
+          _symbol: SYMBOL,
+          _cost: COST,
+          _maxSupply: MAX_SUPPLY,
+          _publicMintOpenOn: PUBLIC_MINT_OPENS,
+          _baseURI: BASE_URI
+        });
+
+        // MINT
+        trx = await nftContract.connect(minter).mint();
+        result = await trx.wait();
+      });
+
+      it('updates the total supply', async() => {
+        expect(await nftContract.totalSupply()).to.equal(1);
+      });
+    });
+  });
 
 })

@@ -29,4 +29,11 @@ contract NFT is ERC721Enumerable, Ownable {
         publicMintOpenOn = args._publicMintOpenOn;
         baseURI = args._baseURI;
     }
+
+    function mint() public {
+        // NOTE - comes from enumerable and will increment here
+        uint256 nowSupply = totalSupply() + 1;
+        // TODO - RESEARCH - _safemint usage and procedure
+        _safeMint(msg.sender, nowSupply);
+    }
 }
