@@ -238,6 +238,50 @@ describe('NFT', () => {
     });
   });
 
+  describe('Minting proceeds withdrawl', () => {
+    // TODO - CONSOLIDATE AND ABSTRACT DEPLOYMENT
+    let trx, result, balanceBefore;
+    const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
+    const MINT_QTY = 2;
+    const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
+    const combinedMintCost = etherToWei(mintAmountInEth);
+
+    console.table({
+      mintAmountInEth
+    })
+    console.log('>> COMBINED_MINT_COST:', combinedMintCost);
+
+    beforeEach(async () => {
+      // ! DEPLOY FOR ALL MINTING !
+      const NFT_factory = await ethers.getContractFactory('NFT');
+      nftContract = await NFT_factory.deploy({
+        _name: NAME,
+        _symbol: SYMBOL,
+        _cost: ONE_MINT_COST,
+        _maxSupply: MAX_SUPPLY,
+        _publicMintOpenOn: PUBLIC_MINT_OPENS,
+        _baseURI: BASE_URI
+      });
+
+      // ! MINT - SUCCESS
+      console.log('>> MINTING:', MINT_QTY);
+      trx = await nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
+      result = await trx.wait();
+
+      balanceBefore = ethers.provider.getBalance(deployer.address);
+
+      // ! WITHDRAW BALANCE
+      trx = await nftContract.connect(deployer).withdraw();
+      result = await trx.wait();
+    });
+
+    describe('Success', () => {
+      it('deducts contract balance', async () => {
+        expect(await ethers.provider.getBalance(nftContract.address)).to.equal(0);
+      })
+    });
+  });
+
   // X - TEMPLATE
   // describe('TEMP', () => {
   //   let trx, result;
