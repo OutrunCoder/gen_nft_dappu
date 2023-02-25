@@ -26,6 +26,7 @@ describe('NFT', () => {
   });
 
   describe('Deployment', () => {
+    // TODO - CONSOLIDATE AND ABSTRACT DEPLOYMENT
     // RESOURCE - https://www.epochconverter.com/
     // const PUBLIC_MINT_OPENS = '1703466000' // Date and time (GMT): Monday, December 25, 2023 1:00:00 AM
     const PUBLIC_MINT_OPENS = (Date.now() + 120000).toString().slice(0, 10) // 2 minutes from now
@@ -66,6 +67,7 @@ describe('NFT', () => {
   })
 
   describe('Minting', () => {
+    // TODO - CONSOLIDATE AND ABSTRACT DEPLOYMENT
     let trx, result;
     const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
     const MINT_QTY = 20;
@@ -159,6 +161,7 @@ describe('NFT', () => {
   });
 
   describe('Minting - pre launch', () => {
+    // TODO - CONSOLIDATE AND ABSTRACT DEPLOYMENT
     const futureDate = 'May 26, 2030 18:00:00';
     const PUBLIC_MINT_OPENS = new Date(futureDate).getTime().toString().slice(0, 10) // ! IN THE FUTURE...
     const MINT_QTY = 2;
