@@ -10,7 +10,8 @@ const etherToWei = tokensToWei;
 describe('NFT', () => {
   const NAME = 'Dapp Punks';
   const SYMBOL = 'DP';
-  const COST = etherToWei(10);
+  const ETH_PER_MINT = 10;
+  const ONE_MINT_COST = etherToWei(ETH_PER_MINT);
   const MAX_SUPPLY = 25;
   const BASE_URI = 'ipfs://QmQ2jnDYecFhrf3asEWjyjZRX1pZSsNWG3qHzmNDvXa9qg/'
 
@@ -34,7 +35,7 @@ describe('NFT', () => {
       nftContract = await NFT_factory.deploy({
           _name: NAME,
           _symbol: SYMBOL,
-          _cost: COST,
+          _cost: ONE_MINT_COST,
           _maxSupply: MAX_SUPPLY,
           _publicMintOpenOn: PUBLIC_MINT_OPENS,
           _baseURI: BASE_URI
@@ -48,7 +49,7 @@ describe('NFT', () => {
       expect(await nftContract.symbol()).to.equal(SYMBOL);
     });
     it('returns the cost to mint', async () => {
-      expect(await nftContract.cost()).to.equal(COST);
+      expect(await nftContract.cost()).to.equal(ONE_MINT_COST);
     });
     it('returns the maximum total supply', async () => {
       expect(await nftContract.maxSupply()).to.equal(MAX_SUPPLY);
@@ -77,7 +78,7 @@ describe('NFT', () => {
         nftContract = await NFT_factory.deploy({
           _name: NAME,
           _symbol: SYMBOL,
-          _cost: COST,
+          _cost: ONE_MINT_COST,
           _maxSupply: MAX_SUPPLY,
           _publicMintOpenOn: PUBLIC_MINT_OPENS,
           _baseURI: BASE_URI
