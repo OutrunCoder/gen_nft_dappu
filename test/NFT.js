@@ -119,6 +119,42 @@ describe('NFT', () => {
     // it('', async() => {});
   });
 
+  describe('Minting - pre launch', () => {
+    const futureDate = 'May 26, 2030 18:00:00';
+    const PUBLIC_MINT_OPENS = new Date(futureDate).getTime().toString().slice(0, 10) // ! IN THE FUTURE...
+    const MINT_QTY = 2;
+    const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
+    const combinedMintCost = etherToWei(mintAmountInEth);
+
+    console.table({
+      futureDate,
+      PUBLIC_MINT_OPENS,
+      MINT_QTY,
+      mintAmountInEth
+    })
+    console.log('>> COMBINED_MINT_COST:', combinedMintCost);
+
+    beforeEach(async () => {
+      // ! DEPLOY FOR ALL MINTING !
+      const NFT_factory = await ethers.getContractFactory('NFT');
+      nftContract = await NFT_factory.deploy({
+        _name: NAME,
+        _symbol: SYMBOL,
+        _cost: ONE_MINT_COST,
+        _maxSupply: MAX_SUPPLY,
+        _publicMintOpenOn: PUBLIC_MINT_OPENS,
+        _baseURI: BASE_URI
+      });
+    });
+
+    describe('Failure', () => {
+      it('rejects minting before launch', async() => {
+        const validButEarly = nftContract.connect(minter).mint(MINT_QTY, { value: combinedMintCost });
+        await expect(validButEarly).to.be.reverted;
+      });
+    });
+  });
+
   // X - TEMPLATE
   // describe('TEMP', () => {
   //   let trx, result;
