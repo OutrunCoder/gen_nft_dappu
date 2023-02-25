@@ -68,7 +68,7 @@ describe('NFT', () => {
   describe('Minting', () => {
     let trx, result;
     const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
-    const MINT_QTY = 45;
+    const MINT_QTY = 20;
     const mintAmountInEth = MINT_QTY * ETH_PER_MINT;
     const combinedMintCost = etherToWei(mintAmountInEth);
 
@@ -119,6 +119,21 @@ describe('NFT', () => {
         const nullMint = nftContract.connect(minter).mint(0, { value: combinedMintCost }); // SHOULD BE 10 PER MINT
         await expect(nullMint).to.be.reverted;
       });
+
+      it('does not allow more NFTs to be minted than max amount', async () => {
+        // const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10) // Now
+        // const NFT = await ethers.getContractFactory('NFT')
+        // nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
+
+        const OVER_MINT = 100;
+        console.log('>> OVER MINTING');
+        console.table({
+          MAX_SUPPLY,
+          OVER_MINT
+        });
+        const overMintReq = nftContract.connect(minter).mint(OVER_MINT, { value: etherToWei(1000) });
+        await expect(overMintReq).to.be.reverted;
+      })
     });
     
     // it('', async() => {});

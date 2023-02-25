@@ -36,16 +36,23 @@ contract NFT is ERC721Enumerable, Ownable {
         
         // 1 mint minimum requirement
         require(_mintQty > 0);
+
+        // TODO - ADD A MAX MINT REQUIREMENT BY MSG.SENDER MAPPING
         
         // Require enough payment for mint
         require(msg.value >= cost * _mintQty, 'Not enough payment to fulfill the requested mint quantity!');
 
+        uint256 supply = totalSupply();
+        // Cap mint to max supply
+        require(supply + _mintQty <= maxSupply, 'MINT max supply met! cannot mint any new NFTs. sorry!');
+
         // Create tokens
+        // ? is index maintained ??? <<<
+        // ? how does the contract keep track of all tokens minted here ??? 
         for (uint256 i = 1; i <= _mintQty; i++) {
             // NOTE - comes from enumerable and will increment here
-            uint256 nowSupply = totalSupply() + 1;
             // TODO - RESEARCH - _safemint usage and procedure
-            _safeMint(msg.sender, nowSupply);
+            _safeMint(msg.sender, supply + i);
         }
     }
 }
