@@ -66,6 +66,7 @@ describe('NFT', () => {
 
   describe('Minting', () => {
     let trx, result;
+    const MINT_QTY = 1;
 
     describe('Success', () => {
       const PUBLIC_MINT_OPENS = (Date.now()).toString().slice(0, 10) // now
@@ -83,12 +84,12 @@ describe('NFT', () => {
         });
 
         // MINT
-        trx = await nftContract.connect(minter).mint();
+        trx = await nftContract.connect(minter).mint(MINT_QTY);
         result = await trx.wait();
       });
 
       it('updates the total supply', async() => {
-        expect(await nftContract.totalSupply()).to.equal(1);
+        expect(await nftContract.totalSupply()).to.equal(MINT_QTY);
       });
     });
   });
