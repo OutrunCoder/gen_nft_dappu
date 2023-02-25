@@ -30,6 +30,8 @@ contract NFT is ERC721Enumerable, Ownable {
         baseURI = args._baseURI;
     }
 
+    event Mint(uint256 quantity, address minter);
+
     function mint(uint256 _mintQty) public payable {
         // Require that publicMintOpenOn date has passed
         require(block.timestamp >= publicMintOpenOn, "Minting cannot happen before open to public date");
@@ -54,5 +56,7 @@ contract NFT is ERC721Enumerable, Ownable {
             // TODO - RESEARCH - _safemint usage and procedure
             _safeMint(msg.sender, supply + i);
         }
+
+        emit Mint(_mintQty, msg.sender);
     }
 }

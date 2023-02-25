@@ -106,6 +106,11 @@ describe('NFT', () => {
       it('updates the contract ether balance', async() => {
         expect(await ethers.provider.getBalance(nftContract.address)).to.equal(combinedMintCost);
       });
+
+      it('emits Mint event', async () => {
+        await expect(trx).to.emit(nftContract, 'Mint')
+          .withArgs(20, minter.address);
+      })
     });
 
     describe('Failure', () => {
@@ -121,10 +126,6 @@ describe('NFT', () => {
       });
 
       it('does not allow more NFTs to be minted than max amount', async () => {
-        // const ALLOW_MINTING_ON = Date.now().toString().slice(0, 10) // Now
-        // const NFT = await ethers.getContractFactory('NFT')
-        // nft = await NFT.deploy(NAME, SYMBOL, COST, MAX_SUPPLY, ALLOW_MINTING_ON, BASE_URI)
-
         const OVER_MINT = 100;
         console.log('>> OVER MINTING');
         console.table({
