@@ -20,7 +20,8 @@
     "test": "react-scripts test",
     "test:nft-contract": "npx hardhat test ./test/NFT.js",
     "eject": "react-scripts eject",
-    "start:hardhat-node": "npx hardhat node"
+    "start:hardhat-node": "npx hardhat node",
+    "deploy:local-contract-nft": "npx hardhat run scripts/deploy_nft-contract.js --network localhost"
   },
   "eslintConfig": {
     "extends": [
