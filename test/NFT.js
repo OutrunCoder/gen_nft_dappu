@@ -150,7 +150,7 @@ describe('NFT', () => {
       })
 
       it('does not return URIs for invalid token IDs', async() => {
-        const badURIRequest = nftContract.connect(minter).tokenURI(27); // 2 over 25 max
+        const badURIRequest = nftContract.tokenURI(27); // 2 over 25 max
         await expect(badURIRequest).to.be.reverted;
       });
     });
