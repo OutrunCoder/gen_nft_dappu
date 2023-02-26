@@ -13,13 +13,14 @@ import NFT_ABI from '../abis/NFT.json'
 
 // Config: Import your network config here
 import config from '../config.json';
+import Countdown from 'react-countdown';
 
 function App() {
   const [provider, setProvider] = useState(null);
   const [nftContract, setNftContract] = useState(null);
 
   const [account, setAccount] = useState(null);
-  const [revealtime, setRevealTime] = useState(0);
+  const [revealTime, setRevealTime] = useState(0);
   const [ maxSupply, setMaxSupply] = useState(0);
   const [ totalSupply, setTotalSupply] = useState(0);
   const [ cost, setCost] = useState(0);
@@ -84,7 +85,9 @@ function App() {
               <img src={preview} alt="Dapp Punks preview" />
             </Col>
             <Col>
-              
+              <div className='my-4 text-center'>
+                <Countdown date={parseInt(revealTime)} className='h2' />
+              </div>
             </Col>
           </Row>
         </>
