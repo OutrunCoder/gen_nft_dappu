@@ -7,6 +7,7 @@ import preview from '../preview.png';
 // Components
 import Navigation from './Navigation';
 import Loading from './Loading';
+import MintHud from './MintHud';
 
 // ABIs: Import your contract ABIs here
 import NFT_ABI from '../abis/NFT.json'
@@ -33,7 +34,7 @@ function App() {
     const { nft } = config[31337];
 
     // Initiate provider
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
 
     // initialize contracts
@@ -66,7 +67,7 @@ function App() {
 
   useEffect(() => {
     if (isLoading) {
-      loadBlockchainData()
+      loadBlockchainData();
     }
   }, [isLoading]);
 
@@ -88,6 +89,12 @@ function App() {
               <div className='my-4 text-center'>
                 <Countdown date={parseInt(revealTime)} className='h2' />
               </div>
+              <MintHud
+                maxSupply={maxSupply}
+                totalSupply={totalSupply}
+                cost={cost}
+                balance={balance}
+              />
             </Col>
           </Row>
         </>
