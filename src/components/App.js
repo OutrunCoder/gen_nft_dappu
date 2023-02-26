@@ -8,6 +8,7 @@ import preview from '../preview.png';
 import Navigation from './Navigation';
 import Loading from './Loading';
 import MintHud from './MintHud';
+import MintBtn from './MintBtn';
 
 // ABIs: Import your contract ABIs here
 import NFT_ABI from '../abis/NFT.json'
@@ -94,6 +95,12 @@ function App() {
                 totalSupply={totalSupply}
                 cost={cost}
                 balance={balance}
+              />
+              <MintBtn 
+                provider={provider}
+                nftContract={nftContract}
+                cost={cost}
+                setIsLoading={setIsLoading}
               />
             </Col>
           </Row>
